@@ -8,6 +8,7 @@
 
 const assert = require('assert'),
     http = require('http'),
+    CONF = require('config'),
     _ = require('lodash'),
     express = require('express'),
     helmet = require('helmet'),
@@ -84,14 +85,12 @@ const createApp = () => {
     //  Configure environments
     if (process.env.NODE_ENV === 'production') {
         logger.notice('Configuring for PRODUCTION environment...');
-/*
         const subnets = (CONF.proxy && CONF.proxy.subnets && Array.isArray(CONF.proxy.subnets)) ?
             CONF.proxy.subnets : [];
         if (subnets.length > 0) {
             logger.notice(`Trust proxies: ${subnets}`);
             app.set('trust proxy', subnets);
         }
-*/
     } else {
         logger.notice('Configuring for DEVELOPMENT environment...');
         app.set('showStackError', true);
