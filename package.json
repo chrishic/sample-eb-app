@@ -1,0 +1,27 @@
+{
+    "name": "Elastic-Beanstalk-Sample-App",
+    "version": "0.0.1",
+    "description": "Sample Node.js Elastic Beanstalk app with MySQL access",
+    "private": false,
+    "engines": {
+        "node": ">=14.17.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/chrishic/sample-eb-app"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "he": "^1.2.0",
+        "helmet": "^4.6.0",
+        "lodash": "^4.17.21",
+        "mysql2": "^2.3.3",
+        "on-headers": "^1.0.2",
+        "sequelize": "6.27.0",
+        "uuid": "^8.3.2",
+        "winston": "^3.2.1"
+    },
+    "scripts": {
+        "start": "node index.js"
+    }
+}
