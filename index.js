@@ -178,12 +178,43 @@ const startServer = (app) => {
 
 };
 
+const configureDatabase = async () => {
+
+    const ssm = require('./lib/ssm');
+
+    //  Retrieve database password from Systems Manager Parameter Store
+    const params = {
+        "Name": CONF.ssm.db_password_parameter_name,
+        "WithDecryption": true
+    };
+
+    let data;
+    try {
+        data = await ssm.getParameter(params).promise();
+    } catch (error) {
+        throw new ServiceError.Internal("ssm.getParameter() failed", { params, error });
+    }
+
+    //  Patch env var with password
+    process.env.DB_PASSWORD = data.Value;
+
+    const db = require('./lib/db');
+
+    logger.notice('Establishing MySQL database connection...');
+
+    //  Wait for database connection
+    db.waitForConnection().then( () => {});
+
+    logger.notice('Connected to MySQL database!');
+
+};
+
 
 /////////////////////////////////////////////
 //  Entry point
 /////////////////////////////////////////////
 
-(function() {
+(async function() {
 
     //  Install handlers for uncaught exceptions
     installUncaughtHandlers();
@@ -197,23 +228,9 @@ const startServer = (app) => {
     //  Now start the server.
     const server = startServer(app);
 
-    //  Configure database connection
+    //  Configure database connection when running in production
     if (process.env.NODE_ENV === 'production') {
-
-        process.env.DB_HOSTNAME = process.env.DB_HOSTNAME || 'localhost';
-        process.env.DB_DATABASE = process.env.DB_DATABASE || 'example';
-        process.env.DB_USERNAME = process.env.DB_USERNAME || 'admin';
-        process.env.DB_PASSWORD = process.env.DB_PASSWORD || 'password';
-
-        const db = require('./lib/db');
-
-        logger.notice('Establishing MySQL database connection...');
-
-        //  Wait for database connection
-        db.waitForConnection().then( () => {});
-
-        logger.notice('Connected to MySQL database!');
-
+        await configureDatabase();
     }
 
     module.exports = app;

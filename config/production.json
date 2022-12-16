@@ -1,6 +1,16 @@
 {
+    "ssm": {
+        "region": "us-west-2",
+        "db_password_parameter_name": "/nodejs-mini-servizi/production/credentials/mysql-db-password.txt"
+    },
+    "mysql": {
+        "username": "ghost",
+        "host": "my-ghost-private.cdhewxmkcyaj.us-west-2.rds.amazonaws.com",
+        "database": "myghost"
+    },
     "proxy": {
         "subnets": [
+            "loopback",
             "10.0.50.0/24",
             "10.0.51.0/24",
             "10.0.52.0/24"
