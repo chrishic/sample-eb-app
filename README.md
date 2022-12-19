@@ -1,6 +1,16 @@
 # sample-eb-app
 Example Elastic Beanstalk application
 
+## Creating a basic RDS MySql instance
+
+__TBD.__
+
+
+## Creating your Elastic Beanstalk application
+
+__TBD.__
+
+
 ## Configuring Secure Secrets
 
 ### Storing Database Password Secret Securely Using SSM
@@ -70,6 +80,12 @@ $ zip -r sample-eb-app.zip .platform *
 ```
 
 ## Querying Logs (via CloudWatch Log Insights)
+
+1. In the AWS Console, go to "CloudWatch"
+2. From left hand menu, choose "Logs->Log Insights".
+3. In "Select log groups" dropdown, choose the "web.stdout.log" listing for your Elastic Beanstalk application
+4. In the query textbox, copy/paste any of the below queries and then click "Run query" button
+	- In top right portion of form, you can choose the time period over which the query should run
 
 ```
 filter (level="request") | fields timestamp, level, message, meta.operation, meta.elapsed_millis, meta.request.url, meta.user.ip_address, meta.user.user_agent
